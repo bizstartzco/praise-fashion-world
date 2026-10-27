@@ -1,0 +1,23 @@
+<!-- {"title": "Shop Men's Jackets, Shirts & Shoes | Praise Fashion World", "description": "The full Praise Fashion World collection: men's jackets, shirts, blazers, outerwear and shoes in Nepal. Open any piece, pick your size and order in one WhatsApp message.", "nav": "shop"} -->
+    <section class="page-head">
+      <div class="wrap">
+        <p class="eyebrow intro" style="--d:.05s">The collection</p>
+        <h1 class="display page-head__title"><span class="line"><span data-shop-title>Shop</span></span></h1>
+      </div>
+    </section>
+    <section class="wrap shop">
+      <div class="toolbar">
+        <div class="chips" data-chips role="group" aria-label="Filter by category">{{chips}}</div>
+        <label class="sort">Sort
+          <select data-sort>
+            <option value="new">Newest</option>
+            <option value="low">Price: low to high</option>
+            <option value="high">Price: high to low</option>
+          </select>
+        </label>
+      </div>
+      <p class="count" data-count aria-live="polite">{{count:all}}</p>
+      <div class="grid" data-shop>
+{{cards:all}}
+      </div>
+    </section>
