@@ -64,7 +64,7 @@
     }).join(" ");
   });
 
-  observe($$(".reveal, .reveal-img, .split"));
+  observe($$(".reveal, .reveal-img, .split, .footer__mark"));
 
   /* ---------- Header: menu, scrolled state, hide on scroll down ---------- */
   var header = $(".header");
@@ -145,6 +145,22 @@
   $$("[data-contact-empty]").forEach(function (el) {
     el.hidden = $$("[data-contact]", el.parentNode).some(function (i) { return !i.hidden; });
   });
+  var socialUrls = {
+    whatsapp: digits(cfg.whatsapp) && "https://wa.me/" + digits(cfg.whatsapp),
+    instagram: cfg.instagram && "https://instagram.com/" + cfg.instagram,
+    facebook: cfg.facebook && "https://facebook.com/" + cfg.facebook,
+    tiktok: cfg.tiktok && "https://tiktok.com/@" + cfg.tiktok
+  };
+  $$("[data-social]").forEach(function (a) {
+    var url = socialUrls[a.getAttribute("data-social")];
+    if (!url) return;
+    a.href = url; a.target = "_blank"; a.rel = "noopener"; a.hidden = false;
+  });
+  $$(".socials").forEach(function (s) { s.hidden = !$$("[data-social]", s).some(function (a) { return !a.hidden; }); });
+  $$("[data-to-top]").forEach(function (b) {
+    b.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" }); });
+  });
+
   $$("[data-delivery-note]").forEach(function (el) {
     if (cfg.deliveryNote) el.textContent = cfg.deliveryNote; else el.hidden = true;
   });

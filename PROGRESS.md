@@ -1,5 +1,19 @@
 # Progress
 
+## 2026-10-27: Footer redesign
+
+- New dark footer with rounded top corners, on every page:
+  - "Find your fit." call to action with Shop and WhatsApp buttons
+  - Brand blurb and social icons
+  - Shop links with item counts, and company links
+  - "Get in touch" column with the contact details
+  - A giant outlined PRAISE wordmark whose letters rise in on scroll and light up on hover
+  - Bottom bar with a back-to-top link
+- Social icons and contact rows appear only once filled in `config.js`. Until then the column
+  reads "Contact details are coming soon".
+- The duplicate dark "Find your fit" band was removed from the home and about pages, since the
+  footer now carries it.
+
 ## 2026-10-27: Testimonials and more animation
 
 **Done**
