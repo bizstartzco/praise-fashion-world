@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shop Men's Jackets, Shirts &amp; Blazers | Praise Fashion World</title>
+  <meta name="description" content="Browse the full Praise Fashion World collection: men's jackets, shirts, blazers and outerwear in Nepal. Pick your size and order in one WhatsApp message.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Shop | Praise Fashion World">
+  <meta property="og:description" content="Jackets, shirts, blazers and outerwear for men in Nepal. Browse the collection and order on WhatsApp.">
+  <meta name="theme-color" content="#161412">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="header">
+    <div class="wrap header__in">
+      <a class="logo" href="./" aria-label="Praise Fashion World, home">
+        <span class="logo__main">PRAISE</span>
+        <span class="logo__sub">Fashion World</span>
+      </a>
+      <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
+      <nav class="nav" id="nav" aria-label="Main">
+        <a href="shop.html" aria-current="page">Shop</a>
+        <a href="./#collections">Collections</a>
+        <a href="./#how-to-order">How to order</a>
+        <a href="./#contact">Contact</a>
+        <a class="btn btn--wa" href="./#contact" data-order data-wa-icon><span data-order-label>Order now</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-head">
+      <div class="wrap">
+        <p class="eyebrow">The collection</p>
+        <h1 class="display">Shop</h1>
+      </div>
+    </section>
+    <section class="wrap" style="padding-bottom:clamp(64px,9vw,128px)">
+      <div class="toolbar">
+        <div class="chips" data-chips role="group" aria-label="Filter by category"></div>
+        <label class="sort">Sort
+          <select data-sort>
+            <option value="new">Newest</option>
+            <option value="low">Price: low to high</option>
+            <option value="high">Price: high to low</option>
+          </select>
+        </label>
+      </div>
+      <p class="count" data-count aria-live="polite"></p>
+      <div class="grid" data-shop></div>
+      <noscript><p>Our catalogue needs JavaScript. Please enable it, or contact us directly.</p></noscript>
+    </section>
+  </main>
+
+  <dialog class="pd" id="pd" aria-labelledby="pd-name">
+    <button class="pd__close" type="button" data-pd-close aria-label="Close">
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.8"/></svg>
+    </button>
+    <div class="pd__grid">
+      <div class="pd__media"><img data-pd-img src="" alt="" width="900" height="1125"></div>
+      <div class="pd__body">
+        <div>
+          <p class="eyebrow" data-pd-cat></p>
+          <h2 class="display" id="pd-name" data-pd-name></h2>
+        </div>
+        <p class="pd__price" data-pd-price></p>
+        <fieldset>
+          <legend>Size</legend>
+          <div class="sizes" data-pd-sizes></div>
+        </fieldset>
+        <p class="pd__err" data-pd-err hidden role="alert">Please choose a size first.</p>
+        <fieldset>
+          <legend>Quantity</legend>
+          <div class="qty">
+            <button type="button" data-pd-minus aria-label="Decrease quantity">−</button>
+            <output data-pd-qty>1</output>
+            <button type="button" data-pd-plus aria-label="Increase quantity">+</button>
+          </div>
+        </fieldset>
+        <button class="btn btn--wa" type="button" data-pd-order></button>
+        <p class="pd__hint" data-pd-hint></p>
+        <p class="pd__hint" data-pd-none hidden>Online ordering opens soon.</p>
+      </div>
+    </div>
+  </dialog>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer__top">
+        <a class="logo" href="./" aria-label="Praise Fashion World, home">
+          <span class="logo__main">PRAISE</span>
+          <span class="logo__sub">Fashion World</span>
+        </a>
+        <div class="footer__links">
+          <div>
+            <h4>Shop</h4>
+            <ul>
+              <li><a href="shop.html?c=Jackets">Jackets</a></li>
+              <li><a href="shop.html?c=Shirts">Shirts</a></li>
+              <li><a href="shop.html?c=Blazers">Blazers</a></li>
+              <li><a href="shop.html?c=Outerwear">Outerwear</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Help</h4>
+            <ul>
+              <li><a href="./#how-to-order">How to order</a></li>
+              <li><a href="./#contact">Contact</a></li>
+            </ul>
+          </div>
+          <div data-contact-group>
+            <h4>Follow</h4>
+            <ul>
+              <li data-contact="instagram"></li>
+              <li data-contact="facebook"></li>
+              <li data-contact="tiktok"></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>© <span data-year>2026</span> Praise Fashion World. Nepal.</span>
+        <span>Photography: <a href="https://www.freepik.com" rel="noopener" target="_blank">Freepik</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/products.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
