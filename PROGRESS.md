@@ -1,5 +1,23 @@
 # Progress
 
+## 2026-10-27: Testimonials and more animation
+
+**Done**
+- **Testimonials slider** ("What customers say") on the home and about pages: autoplay, prev/next,
+  mouse drag, a progress bar, star ratings, product links, and a "Bought from us?" review-request
+  card. It's data-driven from `src/testimonials.js`.
+- **New animations:**
+  - Intro: first-visit PRAISE intro
+  - Headings: letter-by-letter reveals
+  - Scroll: statement that lights up word by word, giant velocity marquee, image parallax, top
+    progress bar, back-to-top button with a progress ring
+  - Mouse (desktop): custom cursor with a "View" bubble, magnetic buttons, 3D card tilt with glare
+- **Checks:** a real-time Chrome session confirmed the intro completes, no heading stays hidden, and
+  the statement lights up with scroll. All links still resolve.
+
+**Open**
+- [ ] Replace the 3 **sample** reviews in `src/testimonials.js` with real customer reviews (with permission)
+
 ## 2026-10-27: Multi-page site, shoes, animations
 
 **Done**

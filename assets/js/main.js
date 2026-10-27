@@ -27,8 +27,17 @@
   }
   var orderChannel = digits(cfg.whatsapp) ? "WhatsApp" : (cfg.instagram ? "Instagram" : null);
 
-  document.documentElement.classList.add("js");
-  requestAnimationFrame(function () { document.documentElement.classList.add("is-loaded"); });
+  var root = document.documentElement;
+  root.classList.add("js");
+  // First visit in a session: the PRAISE intro plays, then the curtain lifts and the page animates in.
+  if (root.classList.contains("first-visit")) {
+    try { sessionStorage.setItem("pfw-seen", "1"); } catch (e) {}
+    setTimeout(function () { root.classList.add("loader-done"); }, 1250);
+    setTimeout(function () { root.classList.add("is-loaded"); }, 1500);
+    setTimeout(function () { root.classList.remove("first-visit"); }, 2400);
+  } else {
+    requestAnimationFrame(function () { root.classList.add("is-loaded"); });
+  }
 
   /* ---------- Reveal on scroll (staggered within a row) ---------- */
   var io = "IntersectionObserver" in window && !reduceMotion ? new IntersectionObserver(function (entries) {
@@ -43,7 +52,19 @@
   function observe(els) {
     els.forEach(function (el) { io ? io.observe(el) : el.classList.add("is-in"); });
   }
-  observe($$(".reveal, .reveal-img"));
+  /* ---------- Split headings into letters (they rise one by one on reveal) ---------- */
+  $$(".split").forEach(function (h) {
+    var text = h.textContent.trim();
+    h.setAttribute("aria-label", text);
+    var n = 0;
+    h.innerHTML = text.split(" ").map(function (word) {
+      return '<span class="w" aria-hidden="true">' + word.split("").map(function (ch) {
+        return '<span class="c" style="--ci:' + (n++) + '">' + esc(ch) + "</span>";
+      }).join("") + "</span>";
+    }).join(" ");
+  });
+
+  observe($$(".reveal, .reveal-img, .split"));
 
   /* ---------- Header: menu, scrolled state, hide on scroll down ---------- */
   var header = $(".header");
@@ -279,5 +300,165 @@
       });
       zoom.addEventListener("mouseleave", function () { zoom.classList.remove("is-zoomed"); });
     }
+  }
+
+  /* ---------- Testimonials carousel: autoplay, buttons, drag, progress ---------- */
+  var quotes = $("[data-quotes]");
+  if (quotes) {
+    var slides = $$(".quote", quotes);
+    var bar = $("[data-q-bar]");
+    var paused = false, timer = null;
+    var current = function () {
+      var x = quotes.scrollLeft, best = 0, bestD = Infinity;
+      slides.forEach(function (s, i) {
+        var d = Math.abs(s.offsetLeft - quotes.offsetLeft - parseFloat(getComputedStyle(quotes).paddingLeft) - x);
+        if (d < bestD) { bestD = d; best = i; }
+      });
+      return best;
+    };
+    var go = function (i) {
+      i = (i + slides.length) % slides.length;
+      var pad = parseFloat(getComputedStyle(quotes).paddingLeft);
+      quotes.scrollTo({ left: slides[i].offsetLeft - quotes.offsetLeft - pad, behavior: reduceMotion ? "auto" : "smooth" });
+    };
+    var mark = function () {
+      var c = current();
+      slides.forEach(function (s, i) { s.classList.toggle("is-active", i === c); });
+      var max = quotes.scrollWidth - quotes.clientWidth;
+      if (bar) bar.style.transform = "scaleX(" + (max > 0 ? Math.max(0.08, quotes.scrollLeft / max) : 1) + ")";
+    };
+    $$("[data-q]").forEach(function (b) {
+      b.addEventListener("click", function () { go(current() + +b.getAttribute("data-q")); restart(); });
+    });
+    quotes.addEventListener("scroll", function () { requestAnimationFrame(mark); }, { passive: true });
+    ["mouseenter", "focusin", "touchstart"].forEach(function (ev) { quotes.addEventListener(ev, function () { paused = true; }, { passive: true }); });
+    ["mouseleave", "focusout"].forEach(function (ev) { quotes.addEventListener(ev, function () { paused = false; }); });
+    var restart = function () {
+      clearInterval(timer);
+      if (!reduceMotion) timer = setInterval(function () { if (!paused && !document.hidden) go(current() + 1); }, 5200);
+    };
+
+    // Drag to scroll with a mouse (touch already scrolls natively)
+    var down = false, startX = 0, startL = 0, moved = false;
+    quotes.addEventListener("pointerdown", function (e) {
+      if (e.pointerType !== "mouse" || e.target.closest("a, button")) return;
+      down = true; moved = false; startX = e.clientX; startL = quotes.scrollLeft;
+      quotes.classList.add("is-dragging");
+    });
+    window.addEventListener("pointermove", function (e) {
+      if (!down) return;
+      var dx = e.clientX - startX;
+      if (Math.abs(dx) > 4) moved = true;
+      quotes.scrollLeft = startL - dx;
+    });
+    window.addEventListener("pointerup", function () {
+      if (!down) return;
+      down = false; quotes.classList.remove("is-dragging");
+      if (moved) go(current());
+    });
+
+    mark();
+    restart();
+  }
+
+  /* ---------- Fine-pointer extras: custom cursor, magnetic buttons, card tilt ---------- */
+  var finePointer = matchMedia("(hover: hover) and (pointer: fine)").matches;
+  if (finePointer && !reduceMotion) {
+    var cursor = $(".cursor");
+    var cx = innerWidth / 2, cy = innerHeight / 2, tx = cx, ty = cy;
+    root.classList.add("has-cursor");
+    window.addEventListener("mousemove", function (e) {
+      tx = e.clientX; ty = e.clientY;
+      cursor.classList.add("is-on");
+      var t = e.target;
+      cursor.classList.toggle("is-view", !!t.closest(".card__link, .cat, .hero__tag"));
+      cursor.classList.toggle("is-link", !t.closest(".card__link, .cat, .hero__tag") && !!t.closest("a, button, summary, label, select, [data-quotes]"));
+    }, { passive: true });
+    document.addEventListener("mouseleave", function () { cursor.classList.remove("is-on"); });
+    (function loop() {
+      cx += (tx - cx) * 0.18; cy += (ty - cy) * 0.18;
+      cursor.style.transform = "translate3d(" + cx.toFixed(1) + "px," + cy.toFixed(1) + "px,0)";
+      requestAnimationFrame(loop);
+    })();
+
+    $$(".btn, .rail-btn, .to-top").forEach(function (b) {
+      b.addEventListener("mousemove", function (e) {
+        var r = b.getBoundingClientRect();
+        var mx = (e.clientX - r.left - r.width / 2) * 0.22, my = (e.clientY - r.top - r.height / 2) * 0.32;
+        b.style.translate = mx.toFixed(1) + "px " + my.toFixed(1) + "px";
+      });
+      b.addEventListener("mouseleave", function () { b.style.translate = ""; });
+    });
+
+    $$(".card__media, .cat").forEach(function (el) {
+      el.addEventListener("mousemove", function (e) {
+        var r = el.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width - 0.5, py = (e.clientY - r.top) / r.height - 0.5;
+        el.style.setProperty("--rx", (-py * 7).toFixed(2) + "deg");
+        el.style.setProperty("--ry", (px * 9).toFixed(2) + "deg");
+        el.style.setProperty("--gx", (px * 100 + 50).toFixed(0) + "%");
+        el.style.setProperty("--gy", (py * 100 + 50).toFixed(0) + "%");
+        el.classList.add("is-tilting");
+      });
+      el.addEventListener("mouseleave", function () {
+        el.classList.remove("is-tilting");
+        el.style.removeProperty("--rx"); el.style.removeProperty("--ry");
+      });
+    });
+  }
+
+  /* ---------- Scroll-linked effects: progress bar, back-to-top ring, parallax, scrub text, velocity marquee ---------- */
+  var progress = $(".progress");
+  var toTop = $(".to-top");
+  var ring = toTop && $(".to-top__ring", toTop);
+  var plx = reduceMotion ? [] : $$(".plx");
+  var vel = reduceMotion ? null : $("[data-velocity]");
+  var scrub = $("[data-scrub]");
+  var scrubWords = [];
+  if (scrub) {
+    scrub.innerHTML = scrub.textContent.trim().split(/\s+/).map(function (w) { return '<span class="sw">' + esc(w) + "</span>"; }).join(" ");
+    scrubWords = $$(".sw", scrub);
+    if (reduceMotion) scrubWords.forEach(function (w) { w.classList.add("on"); });
+  }
+  if (toTop) toTop.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" }); });
+
+  var prevY = window.scrollY, velX = 0, speed = 0;
+  function scrollFx() {
+    var y = window.scrollY, docH = document.documentElement.scrollHeight - innerHeight;
+    var p = docH > 0 ? y / docH : 0;
+    if (progress) progress.style.transform = "scaleX(" + p.toFixed(4) + ")";
+    if (toTop) {
+      toTop.classList.toggle("is-on", y > innerHeight * 0.8);
+      if (ring) ring.style.strokeDashoffset = (100 - p * 100).toFixed(2);
+    }
+    plx.forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > innerHeight) return;
+      var c = (r.top + r.height / 2 - innerHeight / 2) / innerHeight;
+      el.style.setProperty("--plx", (c * -40).toFixed(1) + "px");
+    });
+    if (scrub && !reduceMotion) {
+      var sr = scrub.getBoundingClientRect();
+      var t = Math.min(1, Math.max(0, (innerHeight * 0.85 - sr.top) / (sr.height + innerHeight * 0.35)));
+      var lit = Math.round(t * scrubWords.length);
+      scrubWords.forEach(function (w, i) { w.classList.toggle("on", i < lit); });
+    }
+  }
+  window.addEventListener("scroll", function () { requestAnimationFrame(scrollFx); }, { passive: true });
+  window.addEventListener("resize", scrollFx);
+  scrollFx();
+
+  if (vel) {
+    var half = 0;
+    var measure = function () { half = vel.scrollWidth / 2; };
+    measure(); window.addEventListener("resize", measure);
+    (function tick() {
+      var y = window.scrollY, dy = y - prevY; prevY = y;
+      speed += (Math.max(-60, Math.min(60, dy)) * 0.6 - speed) * 0.1;
+      velX -= 1.2 + Math.abs(speed);
+      if (half && -velX >= half) velX += half;
+      vel.style.transform = "translate3d(" + velX.toFixed(1) + "px,0,0) skewX(" + (-speed * 0.25).toFixed(2) + "deg)";
+      requestAnimationFrame(tick);
+    })();
   }
 })();

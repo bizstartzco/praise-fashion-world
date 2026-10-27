@@ -17,8 +17,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="preload" as="image" href="../assets/img/navy-shirt.webp" fetchpriority="high">
   <link rel="stylesheet" href="../assets/css/style.css">
+  <script>try{if(!sessionStorage.getItem("pfw-seen")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("first-visit")}catch(e){}</script>
 </head>
 <body>
+  <div class="loader" aria-hidden="true">
+    <div class="loader__word"><span style="--i:0">P</span><span style="--i:1">R</span><span style="--i:2">A</span><span style="--i:3">I</span><span style="--i:4">S</span><span style="--i:5">E</span></div>
+    <div class="loader__sub">Fashion World</div>
+    <div class="loader__bar"><span></span></div>
+  </div>
+  <div class="progress" aria-hidden="true"></div>
+  <div class="cursor" aria-hidden="true"><span class="cursor__label">View</span></div>
   <a class="skip" href="#main">Skip to content</a>
   <header class="header">
     <div class="wrap header__in">
@@ -213,6 +221,11 @@
       </div>
     </div>
   </footer>
+
+  <button class="to-top" type="button" aria-label="Back to top">
+    <svg viewBox="0 0 48 48" aria-hidden="true"><circle class="to-top__track" cx="24" cy="24" r="22"/><circle class="to-top__ring" cx="24" cy="24" r="22" pathLength="100"/></svg>
+    <span aria-hidden="true">↑</span>
+  </button>
 
   <script src="../assets/js/config.js"></script>
   <script src="../assets/js/main.js"></script>

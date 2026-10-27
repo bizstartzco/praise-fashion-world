@@ -45,14 +45,32 @@ The HTML pages are **generated**, so don't edit them directly. Edit these instea
 
 ## Animations
 
-Page load: headline lines rise out of a mask, the hero image wipes in, and buttons fade up.
-On scroll: sections fade up with a stagger and images wipe in. The header hides when you scroll
-down and returns when you scroll up, and the hero image has a gentle parallax. Hover effects:
-buttons fill, cards zoom and a "View piece" bar slides up, the product image zooms to follow the
-pointer, and the size picker shakes if no size is chosen. Moving between pages, the browser
-cross-fades and the product photo morphs from card to product page, using View Transitions in
-Chrome, Edge and Safari 18+. All motion turns off for visitors who set "reduce motion" on their
-device.
+- **First visit:** a "PRAISE" intro plays once per browser session, the letters rise and a curtain lifts.
+- **Page load:** headline lines rise out of a mask, the hero image wipes in, and buttons fade up.
+- **Scroll:** section headings animate letter by letter, sections fade up with a stagger, and images
+  wipe in with parallax. The home-page statement lights up word by word as you scroll, and a giant
+  "PRAISE FASHION WORLD" band speeds up and leans with your scroll speed. A thin progress bar runs
+  along the top, and a back-to-top button fills its ring as you go. The header hides when you scroll
+  down and returns when you scroll up.
+- **Mouse (desktop only):** a custom cursor grows over links and turns into a "View" bubble over
+  products, buttons pull magnetically toward the pointer, product cards tilt in 3D with a light
+  glare, and the product image zooms to follow the pointer.
+- **Between pages:** the browser cross-fades, and the product photo morphs from card to product page
+  (Chrome, Edge, Safari 18+).
+- Everything turns off for visitors who set "reduce motion" on their device. Touch screens skip the
+  cursor, magnet and tilt effects.
+
+## Testimonials
+
+The "What customers say" slider is on the home and about pages. It autoplays, can be dragged, and
+links each review to the product it mentions. Reviews live in `src/testimonials.js`.
+
+It currently holds **3 sample cards, clearly labelled "Sample, replace with a real review"**.
+They are not fake reviews, and they must be replaced with real ones (WhatsApp or Instagram
+messages from customers, with their permission) before launch. Inventing reviews breaks
+consumer-protection law and Google's spam policies. `node tools/build.js` prints a warning while
+samples remain. Delete every entry and the section hides itself. The last card, "Bought from us?",
+asks customers for a review.
 
 ## Stock photo sources (Freepik, free licence, attribution required)
 

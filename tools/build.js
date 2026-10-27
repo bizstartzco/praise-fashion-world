@@ -19,6 +19,7 @@ const path = require("path");
 const ROOT = path.resolve(__dirname, "..");
 const SRC = path.join(ROOT, "src");
 const products = require(path.join(SRC, "products.js"));
+const testimonials = require(path.join(SRC, "testimonials.js"));
 const BRAND = "Praise Fashion World";
 
 /* ---------- helpers ---------- */
@@ -68,6 +69,7 @@ function head({ title, description, base, image, extra = "" }) {
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 ${image ? `  <link rel="preload" as="image" href="${base}assets/img/${image}" fetchpriority="high">\n` : ""}  <link rel="stylesheet" href="${base}assets/css/style.css">
+  <script>try{if(!sessionStorage.getItem("pfw-seen")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("first-visit")}catch(e){}</script>
 ${extra}</head>`;
 }
 
@@ -75,6 +77,13 @@ function header(base, active) {
   const links = NAV.map(([key, href, label]) =>
     `        <a href="${base}${href}"${key === active ? ' aria-current="page"' : ""}>${label}</a>`).join("\n");
   return `<body>
+  <div class="loader" aria-hidden="true">
+    <div class="loader__word">${"PRAISE".split("").map((c, i) => `<span style="--i:${i}">${c}</span>`).join("")}</div>
+    <div class="loader__sub">Fashion World</div>
+    <div class="loader__bar"><span></span></div>
+  </div>
+  <div class="progress" aria-hidden="true"></div>
+  <div class="cursor" aria-hidden="true"><span class="cursor__label">View</span></div>
   <a class="skip" href="#main">Skip to content</a>
   <header class="header">
     <div class="wrap header__in">
@@ -135,6 +144,11 @@ ${shopLinks}
     </div>
   </footer>
 
+  <button class="to-top" type="button" aria-label="Back to top">
+    <svg viewBox="0 0 48 48" aria-hidden="true"><circle class="to-top__track" cx="24" cy="24" r="22"/><circle class="to-top__ring" cx="24" cy="24" r="22" pathLength="100"/></svg>
+    <span aria-hidden="true">↑</span>
+  </button>
+
   <script src="${base}assets/js/config.js"></script>
   <script src="${base}assets/js/main.js"></script>
 </body>
@@ -175,6 +189,57 @@ function catTiles(base) {
   }).join("\n");
 }
 
+/* ---------- testimonials ---------- */
+
+const STAR = '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.5l2.6 5.6 6.1.7-4.5 4.2 1.2 6-5.4-3-5.4 3 1.2-6L1.3 7.8l6.1-.7z"/></svg>';
+
+function testimonialSection(base) {
+  if (!testimonials.length) return "";
+  const slides = testimonials.map((t, i) => {
+    const p = t.product && products.find((x) => x.id === t.product);
+    const stars = t.rating ? `<div class="quote__stars" role="img" aria-label="${t.rating} out of 5 stars">${STAR.repeat(t.rating)}</div>` : "";
+    const initials = esc(t.name).split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase();
+    return `<figure class="quote${t.sample ? " quote--sample" : ""}" data-slide="${i}">
+  ${t.sample ? '<span class="quote__sample">Sample, replace with a real review</span>' : ""}
+  ${stars}
+  <blockquote><p>${esc(t.quote)}</p></blockquote>
+  <figcaption>
+    <span class="quote__avatar" aria-hidden="true">${initials}</span>
+    <span><b>${esc(t.name)}</b>${t.place ? `<span>${esc(t.place)}</span>` : ""}</span>
+    ${p ? `<a class="quote__product" href="${base}products/${p.id}.html"><img src="${base}assets/img/${p.image}" alt="" width="48" height="60" loading="lazy">${esc(p.name)}</a>` : ""}
+  </figcaption>
+</figure>`;
+  }).join("\n");
+
+  return `    <section class="section testimonials" aria-labelledby="t-title">
+      <div class="wrap">
+        <div class="section__head">
+          <div>
+            <p class="eyebrow">Reviews</p>
+            <h2 class="display split" id="t-title">What customers say</h2>
+          </div>
+          <div class="rail-ctrl">
+            <button class="rail-btn" type="button" data-q="-1" aria-label="Previous review">←</button>
+            <button class="rail-btn" type="button" data-q="1" aria-label="Next review">→</button>
+          </div>
+        </div>
+      </div>
+      <div class="quotes" data-quotes tabindex="0" aria-roledescription="carousel" aria-label="Customer reviews">
+${slides}
+        <figure class="quote quote--ask">
+          <span class="quote__mark" aria-hidden="true">“</span>
+          <p class="quote__ask-title">Bought from us?</p>
+          <p>Tell us how it went. Send a message with a photo of your fit and we may feature you here.</p>
+          <a class="btn btn--accent" href="${base}contact.html" data-order data-wa-icon><span data-order-label>Send a review</span></a>
+        </figure>
+      </div>
+      <div class="wrap">
+        <div class="quotes__progress" aria-hidden="true"><span data-q-bar></span></div>
+      </div>
+    </section>
+`;
+}
+
 /* ---------- pages ---------- */
 
 function readPage(file) {
@@ -190,6 +255,7 @@ function fill(body, base) {
   return body
     .replace(/\{\{base\}\}/g, base)
     .replace(/\{\{cats\}\}/g, catTiles(base))
+    .replace(/\{\{testimonials\}\}/g, testimonialSection(base))
     .replace(/\{\{cards:featured\}\}/g, cards(clothes.slice(0, 8), base))
     .replace(/\{\{cards:shoes\}\}/g, cards(shoes, base))
     .replace(/\{\{cards:all\}\}/g, cards(products, base))
@@ -314,3 +380,6 @@ check();
 const pages = buildPages();
 const n = buildProducts();
 console.log(`built ${pages.join(", ")} and ${n} product pages`);
+const samples = testimonials.filter((t) => t.sample).length;
+if (samples) console.warn(`WARNING: ${samples} sample review(s) in src/testimonials.js; replace with real reviews before launch`);
+for (const t of testimonials) if (t.product && !products.some((p) => p.id === t.product)) console.warn(`WARNING: review by ${t.name} links to unknown product "${t.product}"`);

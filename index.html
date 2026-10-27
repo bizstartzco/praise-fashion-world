@@ -17,9 +17,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="preload" as="image" href="assets/img/hero-leather.webp" fetchpriority="high">
   <link rel="stylesheet" href="assets/css/style.css">
+  <script>try{if(!sessionStorage.getItem("pfw-seen")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("first-visit")}catch(e){}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"ClothingStore","name":"Praise Fashion World","description":"Men's clothing and shoes brand in Nepal."}</script>
 </head>
 <body>
+  <div class="loader" aria-hidden="true">
+    <div class="loader__word"><span style="--i:0">P</span><span style="--i:1">R</span><span style="--i:2">A</span><span style="--i:3">I</span><span style="--i:4">S</span><span style="--i:5">E</span></div>
+    <div class="loader__sub">Fashion World</div>
+    <div class="loader__bar"><span></span></div>
+  </div>
+  <div class="progress" aria-hidden="true"></div>
+  <div class="cursor" aria-hidden="true"><span class="cursor__label">View</span></div>
   <a class="skip" href="#main">Skip to content</a>
   <header class="header">
     <div class="wrap header__in">
@@ -75,7 +83,7 @@
         <div class="section__head">
           <div>
             <p class="eyebrow">Collections</p>
-            <h2 class="display reveal">Shop by piece</h2>
+            <h2 class="display split">Shop by piece</h2>
           </div>
           <a class="link-arrow" href="shop.html">View everything →</a>
         </div>
@@ -104,12 +112,19 @@
       </div>
     </section>
 
+    <section class="section statement">
+      <div class="wrap">
+        <p class="eyebrow">In one line</p>
+        <p class="statement__text" data-scrub>Clothes for the life you actually live. The office in the morning, tea with friends after, a wedding at the weekend. Fewer pieces, better ones, and shoes that finish the fit.</p>
+      </div>
+    </section>
+
     <section class="section section--paper">
       <div class="wrap">
         <div class="section__head">
           <div>
             <p class="eyebrow">Just in</p>
-            <h2 class="display reveal">New arrivals</h2>
+            <h2 class="display split">New arrivals</h2>
           </div>
           <a class="link-arrow" href="shop.html">Shop all →</a>
         </div>
@@ -227,7 +242,7 @@
         <div class="section__head">
           <div>
             <p class="eyebrow">Footwear</p>
-            <h2 class="display reveal">Finish the fit</h2>
+            <h2 class="display split">Finish the fit</h2>
             <p class="lede shoes__lede">Brogues and loafers for the wedding, derbies for the office, white sneakers and boots for everything else.</p>
           </div>
           <div class="rail-ctrl">
@@ -336,16 +351,79 @@
 
     <section class="section section--paper">
       <div class="wrap story">
-        <div class="story__media reveal-img">
+        <div class="story__media reveal-img plx">
           <img src="assets/img/denim-jacket.webp" alt="Man in an indigo denim jacket and jeans seated on a wooden crate" width="900" height="1125" loading="lazy">
         </div>
         <div>
           <p class="eyebrow">The idea</p>
-          <h2 class="display reveal">Fewer pieces. Better ones.</h2>
+          <h2 class="display split">Fewer pieces. Better ones.</h2>
           <p class="reveal">Praise Fashion World is menswear for the way men in Nepal actually dress: office in the morning, tea with friends after, a wedding or a night out at the weekend.</p>
           <p class="reveal">So we keep the collection tight. Shirts that hold their shape, jackets that layer over them, shoes that finish the outfit, and a few sharper pieces for when it matters.</p>
           <a class="link-arrow reveal" href="about.html">More about us →</a>
         </div>
+      </div>
+    </section>
+
+    <div class="bigtext" aria-hidden="true">
+      <div class="bigtext__track" data-velocity>
+        <span>Praise Fashion World</span><span class="o">Menswear</span><span>Shoes</span><span class="o">Nepal</span>
+        <span>Praise Fashion World</span><span class="o">Menswear</span><span>Shoes</span><span class="o">Nepal</span>
+      </div>
+    </div>
+
+    <section class="section testimonials" aria-labelledby="t-title">
+      <div class="wrap">
+        <div class="section__head">
+          <div>
+            <p class="eyebrow">Reviews</p>
+            <h2 class="display split" id="t-title">What customers say</h2>
+          </div>
+          <div class="rail-ctrl">
+            <button class="rail-btn" type="button" data-q="-1" aria-label="Previous review">←</button>
+            <button class="rail-btn" type="button" data-q="1" aria-label="Next review">→</button>
+          </div>
+        </div>
+      </div>
+      <div class="quotes" data-quotes tabindex="0" aria-roledescription="carousel" aria-label="Customer reviews">
+<figure class="quote quote--sample" data-slide="0">
+  <span class="quote__sample">Sample, replace with a real review</span>
+  
+  <blockquote><p>A real customer&#39;s words go here: what they bought, how it fitted, and how ordering and delivery went.</p></blockquote>
+  <figcaption>
+    <span class="quote__avatar" aria-hidden="true">CN</span>
+    <span><b>Customer name</b><span>City</span></span>
+    
+  </figcaption>
+</figure>
+<figure class="quote quote--sample" data-slide="1">
+  <span class="quote__sample">Sample, replace with a real review</span>
+  
+  <blockquote><p>Paste a short WhatsApp or Instagram message a happy customer sent you. Two or three lines read best.</p></blockquote>
+  <figcaption>
+    <span class="quote__avatar" aria-hidden="true">CN</span>
+    <span><b>Customer name</b><span>City</span></span>
+    <a class="quote__product" href="products/black-leather-biker-jacket.html"><img src="assets/img/hero-leather.webp" alt="" width="48" height="60" loading="lazy">Black Leather Biker Jacket</a>
+  </figcaption>
+</figure>
+<figure class="quote quote--sample" data-slide="2">
+  <span class="quote__sample">Sample, replace with a real review</span>
+  
+  <blockquote><p>Reviews that mention a specific piece and a detail (the size, the colour, a wedding they wore it to) are the most convincing.</p></blockquote>
+  <figcaption>
+    <span class="quote__avatar" aria-hidden="true">CN</span>
+    <span><b>Customer name</b><span>City</span></span>
+    <a class="quote__product" href="products/tan-brogue-oxford.html"><img src="assets/img/shoe-brogue.webp" alt="" width="48" height="60" loading="lazy">Tan Brogue Oxford</a>
+  </figcaption>
+</figure>
+        <figure class="quote quote--ask">
+          <span class="quote__mark" aria-hidden="true">“</span>
+          <p class="quote__ask-title">Bought from us?</p>
+          <p>Tell us how it went. Send a message with a photo of your fit and we may feature you here.</p>
+          <a class="btn btn--accent" href="contact.html" data-order data-wa-icon><span data-order-label>Send a review</span></a>
+        </figure>
+      </div>
+      <div class="wrap">
+        <div class="quotes__progress" aria-hidden="true"><span data-q-bar></span></div>
       </div>
     </section>
 
@@ -354,7 +432,7 @@
         <div class="section__head">
           <div>
             <p class="eyebrow">How to order</p>
-            <h2 class="display reveal">Three steps. No checkout.</h2>
+            <h2 class="display split">Three steps. No checkout.</h2>
           </div>
         </div>
         <div class="steps">
@@ -379,7 +457,7 @@
 
     <section class="section cta">
       <div class="wrap">
-        <h2 class="display reveal">Find your fit.</h2>
+        <h2 class="display split">Find your fit.</h2>
         <p class="reveal">Not sure about a size, or looking for something you don't see here? Message us. We are happy to help.</p>
         <div class="cta__actions reveal">
           <a class="btn btn--accent" href="shop.html">Browse the shop</a>
@@ -434,6 +512,11 @@
       </div>
     </div>
   </footer>
+
+  <button class="to-top" type="button" aria-label="Back to top">
+    <svg viewBox="0 0 48 48" aria-hidden="true"><circle class="to-top__track" cx="24" cy="24" r="22"/><circle class="to-top__ring" cx="24" cy="24" r="22" pathLength="100"/></svg>
+    <span aria-hidden="true">↑</span>
+  </button>
 
   <script src="assets/js/config.js"></script>
   <script src="assets/js/main.js"></script>
